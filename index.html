@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Why I'm Pursuing a Job in AI — And Why That's the Ethical Choice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0f0d0b;
+      --paper: #ffffff;
+      --accent: #b5451b;
+      --muted: #3d3530;
+      --rule: #b0a498;
+      --pull: #f0f0f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 3px double var(--rule);
+      padding: 2.5rem 0 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-label {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .header-label span {
+      display: inline-block;
+      padding: 0 1rem;
+      position: relative;
+    }
+
+    .header-label span::before,
+    .header-label span::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 3rem;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .header-label span::before { right: 100%; }
+    .header-label span::after  { left: 100%; }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      max-width: 750px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .byline {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-top: 1.2rem;
+    }
+
+    .byline strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    /* ── Drop cap ── */
+    .lead-paragraph::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      float: left;
+      line-height: 0.8;
+      margin: 0.15em 0.1em 0 0;
+      color: var(--accent);
+    }
+
+    /* ── Body text ── */
+    p {
+      margin-bottom: 1.6rem;
+      font-size: 1.05rem;
+    }
+
+    /* ── Section headings ── */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      font-style: italic;
+      margin: 3rem 0 1rem;
+      color: var(--ink);
+      position: relative;
+      padding-bottom: 0.6rem;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 2.5rem;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    /* ── Pull quote ── */
+    blockquote {
+      background: var(--pull);
+      border-left: 3px solid var(--accent);
+      margin: 2.5rem -1.5rem;
+      padding: 1.8rem 2rem 1.8rem 2.5rem;
+    }
+
+    blockquote p {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    /* ── Horizontal rule ── */
+    .section-break {
+      text-align: center;
+      margin: 2.5rem 0;
+      color: var(--muted);
+      letter-spacing: 0.5em;
+      font-size: 0.8rem;
+    }
+
+    /* ── References ── */
+    .references {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .references h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .references p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      text-indent: -1.5rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Fade-in animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header  { animation: fadeUp 0.7s ease both; }
+    main    { animation: fadeUp 0.7s ease 0.15s both; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      blockquote { margin: 2rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-label"><span>Essay</span></div>
+  <h1>Why I'm Pursuing a Job in AI — <em>And Why That's the Ethical Choice</em></h1>
+  <div class="byline">By <strong>J. Woods Hayes</strong> &nbsp;·&nbsp; PhD Candidate, Educational Leadership &nbsp;·&nbsp; 2026</div>
+</header>
+
+<main>
+
+  <p class="lead-paragraph">
+    When I tell people I'm pivoting my career toward artificial intelligence, the reactions tend to follow a familiar script. 
+    A pause. A raised eyebrow. Then, sometimes gently and sometimes not: <em>"But isn't that kind of… problematic?"</em>
+    Actually, it's not always a question. Sometimes it's a direct statement. What they mean is: given everything we know — 
+    the environmental costs, the labor displacement, the bias baked into training data, the political manipulation, 
+    the erosion of epistemic trust and pedagogical fidelity — how can someone who cares about social justice walk 
+    willingly into that industry?
+  </p>
+
+  <p>
+    It's a fair question, and it's one I've asked of myself. I have spent two decades working in educational institutions, 
+    endeavoring to protect vulnerable students, navigate polarized environments, and build frameworks that put human 
+    dignity at the center of institutional decision-making. I've arrived at an answer I can defend.
+  </p>
+
+  <p>
+    Working in AI — specifically in societal impacts and safety research — is not a compromise of my values. 
+    It is a very direct expression of them, and something that is crucial in this moment.
+  </p>
+
+  <h2>The Technology Won't Wait for Us</h2>
+
+  <p>
+    The first thing to understand is that the debate over whether AI is ethical is largely academic at this point. 
+    Yes, it matters, but the technology is already here, already deployed, already (re)shaping how millions of people 
+    learn, work, seek medical advice, navigate legal systems, and understand the world. The question is no longer, 
+    "should it exist," but "who shapes it, and toward what ends?"
+  </p>
+
+  <p>
+    Refusing to engage doesn't pause the technology, or make it magically disappear. It just ensures that there are 
+    fewer perspectives in the room that prioritize equity, safety, and the protection of vulnerable populations.
+  </p>
+
+  <blockquote>
+    <p>"Perfect moral purity that produces no change is less ethical than imperfect engagement that reduces harm."</p>
+  </blockquote>
+
+  <p>
+    This is the core of pragmatist ethics — a tradition rooted in Dewey and James that asks not 
+    <em>"are your hands clean?"</em> but <em>"what approach produces the most good?"</em> It is a framework 
+    I have applied throughout my career in education, and it applies here too.
+  </p>
+
+  <h2>We Have Historical Precedent for This</h2>
+
+  <p>
+    The argument that participation equals endorsement has a poor track record as a strategy for change. 
+    The people who shaped civil rights policy didn't do it by refusing to work in government. 
+    The advocates who improved labor conditions didn't do it by avoiding corporations. 
+    The educators who made schools safer for LGBTQ+ students didn't do it by boycotting school boards.
+  </p>
+
+  <p>
+    Transformative change almost always requires a presence inside the systems we seek to disrupt — people 
+    who bring different values, ask different questions, and hold institutions accountable to the populations 
+    they claim to serve. The alternative — leaving those spaces to people who don't share those values — 
+    isn't neutrality. It's abdication.
+  </p>
+
+  <p>
+    Recent illustrations abound. Conservative parent groups have reshaped school boards, curriculum policy, 
+    and library access across the country. They did not do that through boycott, but through deliberate, 
+    sustained presence in institutional spaces. Using that as a lesson for counter-strategy isn't an endorsement 
+    of their tactics - or their motives. It's an acknowledgement that showing up works. Absence doesn't preserve 
+    anything. It just determines who fills the vacuum. In systems that affect vulnerable people at scale, that 
+    is not a trivial distinction.
+  </p>
+
+  <h2>I Know the Costs</h2>
+
+  <p>
+    Twenty years studying how institutions shape human development has given me some relevant insights. 
+    I've researched how policies designed with good intentions produce harm at the margins. I've watched 
+    technologies deployed in schools without adequate frameworks for equity or safety — and because I was 
+    there, participating in the system, I was able to build the guardrails to address them. That is precisely 
+    the work I intend to do in AI. I understand — at a granular, empirical level — how socio-technical systems 
+    fail vulnerable people (e.g. see Noble, 2018; Benjamin, 2023).
+  </p>
+
+  <p>
+    That expertise is exactly what AI development is missing. Most of the people building and studying 
+    these systems are, I believe, genuinely ethical — but they also come from deep technical backgrounds. 
+    What they often lack is sustained, firsthand experience with the communities most affected by their outputs. 
+    Good intentions and lived experience are not the same thing. The research agenda, the evaluation 
+    criteria, the policy positions — all of it is shaped by who is in the room. I want to be in the room.
+  </p>
+
+  <h2>On the Environmental Concern</h2>
+
+  <p>
+    The energy costs of large AI systems are real, documented, and serious. I don't minimize them. 
+    But the people most likely to push for sustainable AI infrastructure, to advocate for efficiency 
+    as an ethical imperative, to name the environmental cost explicitly in research and policy — 
+    are people who care about it enough to make it part of their work. 
+    Stepping back doesn't reduce the energy consumption of a single data center. 
+    Being present and vocal about it might.
+  </p>
+
+  <p>
+    The position that AI shouldn't exist may be correct, but it represents a retrospective moral claim. 
+    The most honest version of the counterargument is this: small reductions in harm aren't as good 
+    as no harm at all, and if the technology shouldn't exist, participating in it — even critically — 
+    legitimizes it. I take that seriously. But legitimacy isn't mine to grant or withhold. These systems 
+    exist, are expanding, and are being shaped right now. The ethical question has shifted tense — from 
+    "should this exist?" to "given that it does, what do we owe the people it will affect?" I choose 
+    to work toward answering the question that's still open.
+  </p>
+
+  <h2>The Honest Acknowledgment</h2>
+
+  <p>
+    I want to be clear about what this argument is and isn't. This isn't a claim that all AI companies 
+    are ethical, or that working at one absolves anyone of responsibility for the harms that emerge. 
+    It isn't a dismissal of legitimate critique. The concerns people raise about AI — about surveillance, 
+    about displacement, about the concentration of power — are serious and, therefore, warrant serious engagement.
+  </p>
+
+  <p>
+    What I am claiming is that the ethical calculation, for someone with my specific background and expertise, 
+    points in one direction. The expected value of contributing my skills to safety and societal impact 
+    research at this moment in AI's development is higher than the expected value of staying away on 
+    principle. That's not rationalization. That's pragmatism — which, in the tradition I was trained in, 
+    is not a lesser form of ethics. It's ethics applied to the real world.
+  </p>
+
+  <div class="section-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <p>
+    My friends and colleagues who push back on this decision are not wrong to ask the question. 
+    The question reflects exactly the kind of critical thinking we need more of as AI becomes 
+    infrastructure. We should even ask, with gusto, if AI <em>should</em> become infrastructure. 
+    I hope they (and all of us) keep asking it — of me, of every researcher in this field, 
+    of the companies and institutions building these systems.
+  </p>
+
+  <p>
+    And I hope my answer, demonstrated over time through the work itself, is more persuasive 
+    than anything I can say here: that the most ethical choice I can make right now is to show up, 
+    bring everything I know about protecting vulnerable people in complex institutions, 
+    and help build AI that actually serves society.
+  </p>
+
+  <p>
+    I may fail. I may make no difference at all. But, the room needs people like us in it. I intend to be there.
+  </p>
+
+  <div class="references">
+    <h3>References</h3>
+    
+    <p>
+      Benjamin, R. (2023). Race after technology. In <em>Social Theory Re-Wired</em> (pp. 
+      405-415). Routledge.
+    </p>
+
+    <p>
+      Noble, S. U. (2018). Algorithms of oppression: How search engines 
+      reinforce racism. In <em>Algorithms of oppression</em>. New York university press.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  &copy; J. Woods Hayes &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; All rights reserved
+</footer>
+
+</body>
+</html>
