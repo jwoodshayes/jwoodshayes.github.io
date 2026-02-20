@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teaching &amp; Learning | J. Woods Hayes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+4:wght@300;400&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0f0d0b;
+      --paper: #ffffff;
+      --accent: #b5451b;
+      --muted: #3d3530;
+      --rule: #b0a498;
+      --tint: #faf8f5;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.7;
+      font-size: 18px;
+    }
+
+    header {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 3rem 2rem 2rem;
+      border-bottom: 2px solid var(--rule);
+    }
+
+    .back {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: var(--muted);
+      text-decoration: none;
+      margin-bottom: 1.5rem;
+      transition: color 0.2s;
+    }
+    .back:hover { color: var(--accent); }
+    .back::before { content: '← '; }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--ink);
+    }
+
+    .page-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-top: 0.75rem;
+    }
+
+    main {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    /* Project card */
+    .project {
+      border: 1px solid var(--rule);
+      margin-bottom: 2.5rem;
+    }
+
+    .project-header {
+      padding: 1.5rem 1.75rem 1.25rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .project-kicker {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .project-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+
+    .project-subtitle {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .project-body {
+      padding: 1.25rem 1.75rem;
+      background: var(--tint);
+    }
+
+    .project-body p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ink);
+      margin-bottom: 1rem;
+    }
+
+    .project-body p:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .project-footer {
+      padding: 1rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--rule);
+      padding: 0.2rem 0.6rem;
+    }
+
+    .project-link {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .project-link:hover { opacity: 0.7; }
+    .project-link::after { content: ' →'; }
+
+    footer {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
+      border-top: 1px solid var(--rule);
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header { animation: fadeUp 0.6s ease both; }
+    main   { animation: fadeUp 0.6s ease 0.15s both; }
+    footer { animation: fadeUp 0.6s ease 0.3s both; }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back" href="index.html">J. Woods Hayes</a>
+  <h1>Teaching &amp; Learning</h1>
+  <p class="page-desc">
+    Interactive tools and pedagogical frameworks for equity-centered teaching. 
+    Built for use in higher education courses on race, policy, and social theory.
+  </p>
+</header>
+
+<main>
+
+  <div class="project">
+    <div class="project-header">
+      <div class="project-kicker">Interactive Game &nbsp;·&nbsp; 2026</div>
+      <div class="project-title">ACCESS</div>
+      <div class="project-subtitle">Who gets in. Who gets left out. Why it's never one thing.</div>
+    </div>
+    <div class="project-body">
+      <p>
+        A browser-based roleplaying game for 2–6 players in which participants build characters 
+        with intersecting identities and navigate real-world scenarios — job interviews, healthcare 
+        encounters, housing applications, financial aid processes — that grant or restrict access 
+        to resources based on how those identities compound.
+      </p>
+      <p>
+        Designed for 200-level courses in sociology, education, and critical theory. Grounded in 
+        Kimberlé Crenshaw's intersectionality framework and Tara Yosso's Community Cultural Wealth 
+        model. Characters with more marginalized identities receive Cultural Wealth Cards — 
+        representing Aspirational, Navigational, Resistant, and Social Capital — which can shift 
+        outcomes and generate richer narrative moments than structural privilege alone would produce.
+      </p>
+      <p>
+        Runs entirely in the browser. No login, no install, no data collected. 
+        Designed for classroom use with groups of 40+ students.
+      </p>
+    </div>
+    <div class="project-footer">
+      <div class="project-tags">
+        <span class="tag">Intersectionality</span>
+        <span class="tag">Critical Race Theory</span>
+        <span class="tag">Game-Based Learning</span>
+        <span class="tag">Community Cultural Wealth</span>
+      </div>
+      <a class="project-link" href="https://jwoodshayes.github.io/access-game/game.html">Play ACCESS</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>
+    Connect: <a href="https://www.linkedin.com/in/jwoodshayes" target="_blank">LinkedIn</a>
+  </p>
+  <p style="margin-top: 1rem;">© 2026 J. Woods Hayes</p>
+</footer>
+
+</body>
+</html>
