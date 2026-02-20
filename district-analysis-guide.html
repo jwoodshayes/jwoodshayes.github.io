@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>District Analysis Guide — EDL 204</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   TOKENS & RESET
+═══════════════════════════════════════════ */
+:root {
+  --bg:        #f5f0e8;
+  --surface:   #fdfbf7;
+  --rule:      #d6c9b0;
+  --ink:       #1c1a16;
+  --ink-soft:  #5c5648;
+  --ink-muted: #9a8f7e;
+  --red:       #b83232;
+  --red-light: #fdf0f0;
+  --blue:      #2a5fa5;
+  --blue-light:#eef3fb;
+  --green:     #2a7a4b;
+  --green-light:#edf7f2;
+  --amber:     #c47800;
+  --amber-light:#fdf5e0;
+  --radius:    8px;
+  --radius-lg: 14px;
+  --shadow:    0 2px 12px rgba(28,26,22,0.10);
+  --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── HEADER ─────────────────────────────── */
+.site-header {
+  background: var(--ink);
+  color: var(--bg);
+  padding: clamp(1.5rem,5vw,3rem) clamp(1rem,4vw,2.5rem) clamp(1.2rem,4vw,2.2rem);
+  position: relative;
+  overflow: hidden;
+}
+.site-header::before {
+  content:'';
+  position:absolute; inset:0;
+  background-image:
+    radial-gradient(circle at 80% 20%, rgba(180,100,50,0.12) 0%, transparent 60%),
+    repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(255,255,255,0.025) 28px,rgba(255,255,255,0.025) 29px);
+}
+.header-inner { position:relative; max-width:720px; }
+.course-tag {
+  display:inline-block;
+  font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase;
+  color:var(--rule); border:1px solid rgba(214,201,176,0.35); border-radius:20px;
+  padding:0.2rem 0.7rem; margin-bottom:0.8rem;
+}
+.site-header h1 {
+  font-family:'Libre Baskerville',serif;
+  font-size:clamp(1.7rem,5.5vw,3rem); line-height:1.15; font-weight:700; margin-bottom:0.6rem;
+}
+.site-header h1 em { font-style:italic; color:#d4a96a; }
+.header-sub { font-size:0.88rem; color:#a89e8e; max-width:480px; line-height:1.6; }
+
+/* ─── PROGRESS RAIL ──────────────────────── */
+.progress-rail {
+  position:sticky; top:0; z-index:200;
+  background:var(--surface); border-bottom:1.5px solid var(--rule);
+  padding:0.65rem clamp(1rem,4vw,2rem);
+  display:flex; align-items:center; gap:0.8rem;
+  box-shadow:0 2px 8px rgba(28,26,22,0.06);
+}
+.progress-label { font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); white-space:nowrap; flex-shrink:0; }
+.progress-track { flex:1; height:5px; background:var(--rule); border-radius:10px; overflow:hidden; min-width:60px; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--green),#4caf8a); border-radius:10px; width:0%; transition:width 0.5s cubic-bezier(0.4,0,0.2,1); }
+.progress-count { font-size:0.75rem; font-weight:600; color:var(--ink-muted); white-space:nowrap; flex-shrink:0; }
+
+/* ─── PAGE BODY ──────────────────────────── */
+.page-body { max-width:760px; margin:0 auto; padding:clamp(1.2rem,4vw,2rem) clamp(0.85rem,3vw,1.5rem) 4rem; }
+
+/* ─── HOW-TO BANNER ──────────────────────── */
+.how-to {
+  background:var(--blue-light); border:1.5px solid #b5ccec; border-radius:var(--radius-lg);
+  padding:1.1rem 1.3rem; margin-bottom:1.8rem; display:flex; gap:0.8rem; align-items:flex-start;
+}
+.how-to-icon { font-size:1.3rem; flex-shrink:0; line-height:1.4; }
+.how-to-text { font-size:0.88rem; color:#1a3060; line-height:1.6; }
+.how-to-text strong { color:var(--blue); }
+
+/* ─── REQUIREMENTS SNAPSHOT ─────────────── */
+.req-snap {
+  background:var(--surface); border:1.5px solid var(--rule); border-radius:var(--radius-lg);
+  padding:1.2rem 1.3rem 1rem; margin-bottom:1.8rem;
+}
+.req-snap-title {
+  font-family:'Libre Baskerville',serif; font-size:0.8rem; font-weight:700;
+  letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted);
+  margin-bottom:0.8rem; padding-bottom:0.6rem; border-bottom:1px solid var(--rule);
+}
+.req-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:0.6rem; }
+.req-badge { background:var(--bg); border:1px solid var(--rule); border-radius:var(--radius); padding:0.6rem 0.75rem; text-align:center; }
+.req-badge-num { font-family:'Libre Baskerville',serif; font-size:1.5rem; font-weight:700; color:var(--red); line-height:1; display:block; }
+.req-badge-label { font-size:0.73rem; color:var(--ink-soft); font-weight:500; margin-top:0.15rem; line-height:1.3; }
+.format-row { display:flex; gap:0.6rem; margin-top:0.8rem; flex-wrap:wrap; }
+.format-pill { background:var(--amber-light); border:1px solid #e8c870; border-radius:20px; padding:0.25rem 0.75rem; font-size:0.78rem; font-weight:600; color:var(--amber); }
+
+/* ─── STEP CARDS ─────────────────────────── */
+.step-card {
+  background:var(--surface); border:1.5px solid var(--rule); border-radius:var(--radius-lg);
+  margin-bottom:1rem; overflow:hidden;
+  transition:box-shadow var(--transition),border-color var(--transition);
+}
+.step-card:hover { box-shadow:var(--shadow); }
+.step-card.is-open { border-color:#b8a98a; box-shadow:var(--shadow); }
+.step-card.is-complete { border-color:#7ecfa0; }
+
+.step-toggle {
+  width:100%; display:flex; align-items:center; gap:0.85rem;
+  padding:0.95rem 1.1rem; background:none; border:none; cursor:pointer; text-align:left;
+  transition:background var(--transition);
+}
+.step-toggle:hover { background:rgba(28,26,22,0.03); }
+.step-card.is-open .step-toggle { background:rgba(28,26,22,0.025); }
+
+.step-bubble {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--ink); color:var(--bg);
+  font-family:'Libre Baskerville',serif; font-size:0.95rem; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  transition:background var(--transition),transform var(--transition);
+}
+.step-card.is-complete .step-bubble { background:var(--green); }
+.step-toggle:hover .step-bubble { transform:scale(1.06); }
+
+.step-label { flex:1; min-width:0; }
+.step-name { font-family:'Libre Baskerville',serif; font-size:clamp(0.95rem,2.5vw,1.05rem); font-weight:700; color:var(--ink); display:block; line-height:1.25; }
+.step-hint { font-size:0.78rem; color:var(--ink-muted); margin-top:0.1rem; display:block; }
+
+.step-done-tag {
+  font-size:0.68rem; font-weight:600; letter-spacing:0.06em; text-transform:uppercase;
+  color:var(--green); background:var(--green-light); border:1px solid #7ecfa0;
+  border-radius:10px; padding:0.15rem 0.5rem; display:none; flex-shrink:0;
+}
+.step-card.is-complete .step-done-tag { display:inline-block; }
+
+.step-chevron { font-size:0.75rem; color:var(--ink-muted); transition:transform var(--transition); flex-shrink:0; }
+.step-card.is-open .step-chevron { transform:rotate(180deg); }
+
+.step-body { display:none; padding:0 1.2rem 1.4rem; border-top:1px solid var(--rule); }
+.step-card.is-open .step-body { display:block; animation:fadeSlide 0.2s ease; }
+
+@keyframes fadeSlide { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+
+/* ─── BODY TYPOGRAPHY ────────────────────── */
+.step-body p { font-size:0.9rem; color:var(--ink-soft); margin-bottom:0.7rem; }
+.step-body p:last-child { margin-bottom:0; }
+.step-body strong { color:var(--ink); font-weight:600; }
+.step-body a { color:var(--blue); text-decoration:underline; text-underline-offset:2px; }
+
+.body-section-title {
+  font-size:0.7rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--ink-muted); margin:1.2rem 0 0.5rem; padding-bottom:0.3rem;
+  border-bottom:1px dashed var(--rule);
+}
+.body-section-title:first-child { margin-top:1rem; }
+
+/* ─── CALLOUT BOXES ──────────────────────── */
+.callout {
+  border-radius:var(--radius); padding:0.8rem 1rem; margin:0.7rem 0;
+  font-size:0.87rem; line-height:1.6; display:flex; gap:0.6rem;
+}
+.callout-icon { flex-shrink:0; font-size:0.95rem; line-height:1.6; }
+.callout-body { flex:1; }
+.callout-body strong { display:block; font-size:0.7rem; font-weight:700; letter-spacing:0.09em; text-transform:uppercase; margin-bottom:0.25rem; }
+.callout.tip    { background:var(--green-light);  border-left:3px solid var(--green);  color:#173d28; }
+.callout.tip strong { color:var(--green); }
+.callout.warn   { background:var(--red-light);    border-left:3px solid var(--red);    color:#5a1515; }
+.callout.warn strong { color:var(--red); }
+.callout.prompt { background:var(--blue-light);   border-left:3px solid var(--blue);   color:#162d5c; }
+.callout.prompt strong { color:var(--blue); }
+.callout.example{ background:var(--amber-light);  border-left:3px solid var(--amber);  color:#4a3000; }
+.callout.example strong { color:var(--amber); }
+
+/* ─── CHECKLIST ──────────────────────────── */
+.check-list { list-style:none; margin:0.5rem 0 0.8rem; }
+.check-list li {
+  display:flex; align-items:flex-start; gap:0.6rem;
+  padding:0.38rem 0.2rem; border-bottom:1px solid #eee8db;
+  font-size:0.88rem; color:var(--ink-soft); transition:color var(--transition);
+}
+.check-list li:last-child { border-bottom:none; }
+.check-list li.is-checked { color:var(--ink-muted); }
+.check-list li.is-checked label { text-decoration:line-through; }
+.check-list input[type="checkbox"] { width:17px; height:17px; margin-top:1px; accent-color:var(--green); cursor:pointer; flex-shrink:0; }
+.check-list label { cursor:pointer; flex:1; line-height:1.5; }
+
+/* ─── RESOURCE LINKS ─────────────────────── */
+.resource-row { display:flex; flex-wrap:wrap; gap:0.45rem; margin:0.5rem 0 0.8rem; }
+.res-link {
+  display:inline-flex; align-items:center; gap:0.3rem;
+  background:var(--bg); border:1.5px solid var(--rule); border-radius:20px;
+  padding:0.28rem 0.75rem; font-size:0.8rem; font-weight:500; color:var(--blue);
+  text-decoration:none; transition:background var(--transition),border-color var(--transition),color var(--transition);
+}
+.res-link:hover { background:var(--ink); border-color:var(--ink); color:var(--bg); }
+
+/* ─── SCRATCHPAD ─────────────────────────── */
+.scratch-label { font-size:0.72rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); margin-top:1rem; margin-bottom:0.35rem; display:block; }
+textarea.scratch {
+  width:100%; min-height:88px; resize:vertical;
+  background:var(--bg); border:1.5px solid var(--rule); border-radius:var(--radius);
+  padding:0.7rem 0.9rem; font-family:'DM Sans',sans-serif; font-size:0.88rem;
+  color:var(--ink); line-height:1.55;
+  transition:border-color var(--transition),box-shadow var(--transition);
+  -webkit-appearance:none;
+}
+textarea.scratch:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(42,95,165,0.12); }
+textarea.scratch::placeholder { color:var(--ink-muted); }
+
+/* ─── APA BLOCKS ─────────────────────────── */
+.apa-block {
+  background:var(--bg); border:1px solid var(--rule); border-radius:var(--radius);
+  padding:0.85rem 1rem; margin:0.6rem 0;
+  font-size:0.83rem; color:var(--ink-soft); line-height:1.75;
+}
+.apa-block + .apa-block { margin-top:0.35rem; }
+.apa-type { font-weight:700; color:var(--ink); font-size:0.73rem; letter-spacing:0.07em; text-transform:uppercase; display:block; margin-bottom:0.2rem; }
+.apa-block em { font-style:italic; }
+
+/* ─── SUBMIT CARD ────────────────────────── */
+.submit-card { background:var(--ink); color:var(--bg); border-radius:var(--radius-lg); padding:1.8rem 1.5rem; margin-top:2rem; }
+.submit-card h2 { font-family:'Libre Baskerville',serif; font-size:1.35rem; font-weight:700; margin-bottom:0.3rem; }
+.submit-card > p { font-size:0.85rem; color:#a89e8e; margin-bottom:1.1rem; }
+.submit-card .check-list li { border-color:rgba(214,201,176,0.15); color:#cec5b8; font-size:0.86rem; }
+.submit-card .check-list li.is-checked { color:#6b6355; }
+.submit-card .check-list li.is-checked label { text-decoration:line-through; }
+.submit-card .check-list input[type="checkbox"] { accent-color:#4caf8a; }
+
+/* ─── MOBILE ─────────────────────────────── */
+@media (max-width:480px) {
+  .req-grid { grid-template-columns:repeat(3,1fr); }
+  .step-toggle { padding:0.85rem 0.9rem; gap:0.65rem; }
+  .step-body { padding:0 0.9rem 1.2rem; }
+  .step-bubble { width:32px; height:32px; font-size:0.88rem; }
+  .callout { padding:0.7rem 0.85rem; }
+}
+@media (max-width:360px) {
+  .req-grid { grid-template-columns:repeat(2,1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="course-tag">EDL 204 · Sociocultural Foundations of Education</div>
+    <h1>District Analysis<br><em>Step-by-Step Guide</em></h1>
+    <p class="header-sub">Your interactive companion for building a strong paper or slide deck — one step at a time. Notes you type are saved in your browser.</p>
+  </div>
+</header>
+
+<!-- PROGRESS -->
+<div class="progress-rail" role="status" aria-label="Checklist progress">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 / 0</span>
+</div>
+
+<!-- BODY -->
+<main class="page-body">
+
+  <div class="how-to" role="note">
+    <span class="how-to-icon">📖</span>
+    <p class="how-to-text"><strong>How to use this guide:</strong> Tap any step to expand it. Work through the checklists, use the writing prompts, and draft your ideas in the scratchpad boxes. Everything you type is <strong>saved automatically</strong> in your browser — you can close the tab and come back later.</p>
+  </div>
+
+  <!-- REQUIREMENTS SNAPSHOT -->
+  <div class="req-snap" aria-label="Assignment requirements at a glance">
+    <div class="req-snap-title">Assignment Requirements at a Glance</div>
+    <div class="req-grid">
+      <div class="req-badge"><span class="req-badge-num">3+</span><span class="req-badge-label">EOP Data Patterns</span></div>
+      <div class="req-badge"><span class="req-badge-num">1+</span><span class="req-badge-label">News Article (≤2 yrs)</span></div>
+      <div class="req-badge"><span class="req-badge-num">2+</span><span class="req-badge-label">Course Readings</span></div>
+      <div class="req-badge"><span class="req-badge-num">2+</span><span class="req-badge-label">APA Quotes</span></div>
+      <div class="req-badge"><span class="req-badge-num">4</span><span class="req-badge-label">Questions Answered</span></div>
+    </div>
+    <div class="format-row">
+      <span class="format-pill">📄 Option A: 2–3 pg paper (.docx / .pdf)</span>
+      <span class="format-pill">🖼 Option B: 10 slides (.pptx / .pdf)</span>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 0 ═══ -->
+  <div class="step-card" id="step-0">
+    <button class="step-toggle" onclick="toggleStep('step-0')" aria-expanded="false">
+      <div class="step-bubble">0</div>
+      <div class="step-label">
+        <span class="step-name">Choose Your District</span>
+        <span class="step-hint">Identify the right district before searching for any data</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">Which district do you use?</div>
+      <p>Use the <strong>first</strong> option that applies to you:</p>
+      <ul class="check-list" id="cl-0">
+        <li><input type="checkbox" id="c0a"><label for="c0a">The public school district you <strong>personally attended</strong> (the one you discussed in your reflection paper)</label></li>
+        <li><input type="checkbox" id="c0b"><label for="c0b">If you attended private school: the public district in the town <strong>where you grew up</strong></label></li>
+        <li><input type="checkbox" id="c0c"><label for="c0c">If you are now settled somewhere new: the district <strong>where you currently live</strong></label></li>
+        <li><input type="checkbox" id="c0d"><label for="c0d">I have the exact official name of the district written down (needed for the EOP search)</label></li>
+      </ul>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body"><strong>Tip</strong>Use the full official name — e.g., "Hamilton City School District" not just "Hamilton." This matters when searching the EOP website.</div>
+      </div>
+      <span class="scratch-label">Your district name (jot it here)</span>
+      <textarea class="scratch" id="sc-0" placeholder="e.g., Middletown City School District, Ohio" rows="2"></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 1 ═══ -->
+  <div class="step-card" id="step-1">
+    <button class="step-toggle" onclick="toggleStep('step-1')" aria-expanded="false">
+      <div class="step-bubble">1</div>
+      <div class="step-label">
+        <span class="step-name">Explore the EOP Data</span>
+        <span class="step-hint">Find at least 3 specific data patterns for your district</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">Open the Website</div>
+      <p>Go to the Educational Opportunity Project and search for your district by name. All data appears in the <strong>left sidebar tabs</strong> once your district loads.</p>
+      <div class="resource-row">
+        <a class="res-link" href="https://edopportunity.org" target="_blank" rel="noopener">📊 Educational Opportunity Project ↗</a>
+      </div>
+      <div class="body-section-title">What to Look At</div>
+      <p>Under <strong>Educational Opportunity Metrics → Average Test Score</strong>, the scale runs from <strong>−6 to +6</strong>, where 0 = U.S. average. Find data for at least 3 items from this list:</p>
+      <ul class="check-list" id="cl-1">
+        <li><input type="checkbox" id="c1a"><label for="c1a"><strong>Overall average test score</strong> — is the district above (positive) or below (negative) the U.S. average?</label></li>
+        <li><input type="checkbox" id="c1b"><label for="c1b"><strong>White–Black achievement gap</strong> — score difference between white and Black students</label></li>
+        <li><input type="checkbox" id="c1c"><label for="c1c"><strong>White–Hispanic achievement gap</strong> — score difference between white and Hispanic students</label></li>
+        <li><input type="checkbox" id="c1d"><label for="c1d"><strong>Non-poor vs. poor gap</strong> — gap between economically advantaged and disadvantaged students</label></li>
+        <li><input type="checkbox" id="c1e"><label for="c1e"><strong>Learning rates</strong> — is annual academic growth faster or slower than the national average?</label></li>
+        <li><input type="checkbox" id="c1f"><label for="c1f"><strong>Trend over time</strong> — are scores improving, declining, or flat?</label></li>
+        <li><input type="checkbox" id="c1g"><label for="c1g"><strong>Comparison to similar districts</strong> — how does it compare to districts with similar socioeconomic status?</label></li>
+        <li><input type="checkbox" id="c1h"><label for="c1h">(Large district only) <strong>School-by-school comparison</strong> — compare your elementary school to another in the district</label></li>
+      </ul>
+      <div class="callout example">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body"><strong>Example from the assignment</strong>"In Bucyrus City School District, the difference in average test score between non-poor and poor students is +1.7. The scale is from −6 to +6. This means that poor students are achieving significantly worse than non-poor students, even though both groups are not doing well. Test scores are lower than the U.S. average, learning rates are slower, and scores are declining over time."</div>
+      </div>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body"><strong>Be specific with numbers</strong>Write the actual value (e.g., "−0.4 grade levels") not just "lower than average." Specific numbers are what earn full credit.</div>
+      </div>
+      <span class="scratch-label">Pattern 1 — exact data and what it means</span>
+      <textarea class="scratch" id="sc-1a" placeholder="e.g., The overall average test score is −1.2, meaning students in this district score about 1.2 grade levels below the U.S. average."></textarea>
+      <span class="scratch-label">Pattern 2 — exact data and what it means</span>
+      <textarea class="scratch" id="sc-1b" placeholder="Second pattern or gap..."></textarea>
+      <span class="scratch-label">Pattern 3 — exact data and what it means</span>
+      <textarea class="scratch" id="sc-1c" placeholder="Third pattern or gap..."></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 2 ═══ -->
+  <div class="step-card" id="step-2">
+    <button class="step-toggle" onclick="toggleStep('step-2')" aria-expanded="false">
+      <div class="step-bubble">2</div>
+      <div class="step-label">
+        <span class="step-name">Find a Recent News Article</span>
+        <span class="step-hint">1 reputable article about your district from the last 2 years</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">The Requirement</div>
+      <p>One article from a <strong>reputable source</strong>, published within the <strong>last two years</strong>. It should cover something real happening in your district — test scores, budget, demographics, programs, staff issues, etc.</p>
+      <div class="body-section-title">Search Strategies</div>
+      <div class="callout prompt">
+        <span class="callout-icon">🔎</span>
+        <div class="callout-body"><strong>Try these searches in Google or Google News</strong>
+"[District Name] student achievement 2024"<br>
+"[District Name] achievement gap"<br>
+"[District Name] school funding"<br>
+"[District Name] reading proficiency 2023"<br>
+"[District Name] site:daytondailynews.com" (swap in your local paper)</div>
+      </div>
+      <div class="body-section-title">Acceptable Source Types</div>
+      <ul class="check-list" id="cl-2">
+        <li><input type="checkbox" id="c2a"><label for="c2a">Local newspaper (Dayton Daily News, Columbus Dispatch, Cincinnati Enquirer, etc.)</label></li>
+        <li><input type="checkbox" id="c2b"><label for="c2b">State education press (Ohio Capital Journal, Chalkbeat Ohio)</label></li>
+        <li><input type="checkbox" id="c2c"><label for="c2c">School district website, official report, or board meeting summary</label></li>
+        <li><input type="checkbox" id="c2d"><label for="c2d">National education outlet (Education Week, The 74 Million)</label></li>
+      </ul>
+      <div class="callout warn">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body"><strong>Not acceptable</strong>Wikipedia, personal blogs, Reddit, social media posts, or content aggregators without editorial standards. When in doubt, ask your instructor.</div>
+      </div>
+      <span class="scratch-label">Article notes (title, source, date, URL, key point to use)</span>
+      <textarea class="scratch" id="sc-2" placeholder="Title:&#10;Author(s):&#10;Publication / Source:&#10;Date:&#10;URL:&#10;&#10;Key finding or detail I will reference:"></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 3 ═══ -->
+  <div class="step-card" id="step-3">
+    <button class="step-toggle" onclick="toggleStep('step-3')" aria-expanded="false">
+      <div class="step-bubble">3</div>
+      <div class="step-label">
+        <span class="step-name">Select Course Readings &amp; Draft Quotes</span>
+        <span class="step-hint">2+ readings from Modules 1–3 with at least 2 direct APA quotes</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">What You Need</div>
+      <p>Use <strong>at least 2 course readings</strong> from Modules 1, 2, or 3 (videos and podcasts count). From these, pull <strong>at least 2 direct quotes</strong> — each at least one full sentence — with APA in-text citations.</p>
+      <div class="body-section-title">Concepts to Look for in Your Readings</div>
+      <ul class="check-list" id="cl-3">
+        <li><input type="checkbox" id="c3a"><label for="c3a"><strong>Out-of-school factors</strong> — poverty, housing instability, food insecurity, parental employment, stress</label></li>
+        <li><input type="checkbox" id="c3b"><label for="c3b"><strong>In-school factors</strong> — curriculum quality, teacher experience/turnover, resource inequity, tracking</label></li>
+        <li><input type="checkbox" id="c3c"><label for="c3c"><strong>Structural factors</strong> — school funding systems, racial/economic segregation, local tax base</label></li>
+        <li><input type="checkbox" id="c3d"><label for="c3d"><strong>Opportunity gap framing</strong> — does a reading reframe "achievement gap" as a systemic problem?</label></li>
+        <li><input type="checkbox" id="c3e"><label for="c3e">I have located 2 specific passages I can quote and connect directly to my district's patterns</label></li>
+      </ul>
+      <div class="body-section-title">APA In-Text Citation Formats</div>
+      <div class="apa-block">
+        <span class="apa-type">Direct quote with page number</span>
+        "Poverty is the strongest predictor of educational outcomes in American public schools" (Smith, 2021, p. 47).
+      </div>
+      <div class="apa-block">
+        <span class="apa-type">Direct quote — video or podcast (use timestamp instead of page)</span>
+        "Children living in poverty face compounding disadvantages both inside and outside the classroom" (Jones &amp; Patel, 2022, 14:32).
+      </div>
+      <div class="apa-block">
+        <span class="apa-type">Paraphrase (no quotation marks — just the citation)</span>
+        Research consistently links concentrated poverty to lower academic achievement (Reardon, 2020).
+      </div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body"><strong>Tip</strong>A "quote" for this assignment must be at least one <em>full sentence</em>. Copy it word-for-word, wrap in quotation marks, and place the APA citation right after the closing quote mark, before the period.</div>
+      </div>
+      <span class="scratch-label">Reading 1 — title, author, concept, draft quote with APA citation</span>
+      <textarea class="scratch" id="sc-3a" placeholder="Title &amp; Author:&#10;Concept I'm connecting to my district:&#10;&#10;Draft quote: &quot;[copy exact sentence here]&quot; (Author, Year, p. #)."></textarea>
+      <span class="scratch-label">Reading 2 — title, author, concept, draft quote with APA citation</span>
+      <textarea class="scratch" id="sc-3b" placeholder="Title &amp; Author:&#10;Concept I'm connecting to my district:&#10;&#10;Draft quote: &quot;[copy exact sentence here]&quot; (Author, Year, p. #)."></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 4 — Q1 ═══ -->
+  <div class="step-card" id="step-4">
+    <button class="step-toggle" onclick="toggleStep('step-4')" aria-expanded="false">
+      <div class="step-bubble">4</div>
+      <div class="step-label">
+        <span class="step-name">Question 1 — Describe the Patterns &amp; Gaps</span>
+        <span class="step-hint">What stands out in the EOP data? Overall scores + subgroup gaps</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">What This Question Asks</div>
+      <p>Describe at least <strong>3 specific patterns or achievement gaps</strong> from the EOP data. Cover both the district's overall scores <em>and</em> differences between student subgroups. Use the actual numbers.</p>
+      <div class="body-section-title">Checklist for This Section</div>
+      <ul class="check-list" id="cl-4">
+        <li><input type="checkbox" id="c4a"><label for="c4a">State the overall average test score with the actual number and explain what it means (above/below, by how much)</label></li>
+        <li><input type="checkbox" id="c4b"><label for="c4b">Describe gap #1 between two specific subgroups, including the data value</label></li>
+        <li><input type="checkbox" id="c4c"><label for="c4c">Describe gap #2 — different subgroups or a different metric (e.g., learning rate, trend)</label></li>
+        <li><input type="checkbox" id="c4d"><label for="c4d">Mention at least one trend over time (rising? falling? flat?) with specifics</label></li>
+        <li><input type="checkbox" id="c4e"><label for="c4e">All claims use the actual numbers from EOP — not just qualitative descriptions</label></li>
+      </ul>
+      <div class="callout prompt">
+        <span class="callout-icon">✏️</span>
+        <div class="callout-body"><strong>Writing starters</strong>
+"In [District Name], the overall average test score is ___ on the −6 to +6 scale, placing it [above/below] the U.S. average…"<br><br>
+"The largest achievement gap I found is between ___ and ___ students. The difference is ___…"<br><br>
+"Over time, scores in this district have been [improving / declining / staying flat]. Specifically, …"</div>
+      </div>
+      <span class="scratch-label">Draft your response to Question 1</span>
+      <textarea class="scratch" id="sc-4" placeholder="Aim for 2–4 paragraphs, one per pattern, each with specific data." rows="7"></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 5 — Q2 ═══ -->
+  <div class="step-card" id="step-5">
+    <button class="step-toggle" onclick="toggleStep('step-5')" aria-expanded="false">
+      <div class="step-bubble">5</div>
+      <div class="step-label">
+        <span class="step-name">Question 2 — Explain the Causes</span>
+        <span class="step-hint">Use course readings + news article to explain <em>why</em> these patterns exist</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">What This Question Asks</div>
+      <p>Use course readings and your news article to explain <em>why</em> the patterns exist. You <strong>must</strong> address both <strong>in-school factors</strong> (inside schools) <em>and</em> <strong>out-of-school factors</strong> (poverty, housing, community economics). Include at least 2 direct APA quotes.</p>
+      <div class="body-section-title">Checklist for This Section</div>
+      <ul class="check-list" id="cl-5">
+        <li><input type="checkbox" id="c5a"><label for="c5a"><strong>Out-of-school factor explained</strong> — poverty, unemployment, housing instability, access to healthcare, etc.</label></li>
+        <li><input type="checkbox" id="c5b"><label for="c5b"><strong>In-school factor explained</strong> — teacher turnover, funding gaps, curriculum, ability grouping/tracking, etc.</label></li>
+        <li><input type="checkbox" id="c5c"><label for="c5c">Quote from Reading 1 with full APA citation integrated into the text</label></li>
+        <li><input type="checkbox" id="c5d"><label for="c5d">Quote from Reading 2 with full APA citation integrated into the text</label></li>
+        <li><input type="checkbox" id="c5e"><label for="c5e">News article referenced to ground the explanation in something <em>specific</em> to your district</label></li>
+        <li><input type="checkbox" id="c5f"><label for="c5f">Course concepts tied directly back to the specific data from your district (not just generic)</label></li>
+      </ul>
+      <div class="callout example">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body"><strong>Example from the assignment prompt</strong>"One explanation for test scores declining faster than average in Bucyrus City School District might be because poverty rates are increasing as more middle-class and working-class families move away, as most of the small factories that provided jobs… have closed, so there are no longer many jobs available in the town. Based on a number of course readings, we know that poverty correlates with lower school achievement, due to outside factors related to poverty…"</div>
+      </div>
+      <div class="callout prompt">
+        <span class="callout-icon">✏️</span>
+        <div class="callout-body"><strong>Writing starters</strong>
+"One out-of-school factor that likely explains [pattern] in [District] is…"<br><br>
+"According to [Author] (Year), '[your quote here],' which connects to my district because…"<br><br>
+"Inside [District]'s schools, one in-school factor contributing to the gap is…"<br><br>
+"A recent article from [Source] reported that [detail], which directly relates to the data because…"</div>
+      </div>
+      <span class="scratch-label">Draft your response to Question 2</span>
+      <textarea class="scratch" id="sc-5" placeholder="Aim for 2–3 paragraphs. Introduce each quote and explain how it connects to your district." rows="8"></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 6 — Q3 ═══ -->
+  <div class="step-card" id="step-6">
+    <button class="step-toggle" onclick="toggleStep('step-6')" aria-expanded="false">
+      <div class="step-bubble">6</div>
+      <div class="step-label">
+        <span class="step-name">Question 3 — Are the Patterns Surprising?</span>
+        <span class="step-hint">Reflect from two vantage points: before the course and right now</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">What This Question Asks</div>
+      <p>Write <strong>one solid paragraph</strong> reflecting on whether the patterns surprised you. The assignment asks you to consider this from <strong>two specific moments</strong>:</p>
+      <p><strong>Before</strong> — What would you have thought before starting this course (or before college)?</p>
+      <p><strong>Now</strong> — What do you think now, having studied Modules 1–3 this semester?</p>
+      <div class="body-section-title">Checklist for This Section</div>
+      <ul class="check-list" id="cl-6">
+        <li><input type="checkbox" id="c6a"><label for="c6a">Include at least one specific personal memory or observation about the district</label></li>
+        <li><input type="checkbox" id="c6b"><label for="c6b">Address what you would have thought <em>before</em> this course</label></li>
+        <li><input type="checkbox" id="c6c"><label for="c6c">Address what you think <em>now</em>, drawing on Modules 1–3 content</label></li>
+        <li><input type="checkbox" id="c6d"><label for="c6d">Be honest — some things can be surprising while others aren't</label></li>
+      </ul>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body"><strong>What earns full credit here</strong>Specificity. "I grew up in this district and attended [School Name], where I remember…" is far stronger than "yes, this surprised me." Connect the data to something real you experienced or observed.</div>
+      </div>
+      <div class="callout prompt">
+        <span class="callout-icon">✏️</span>
+        <div class="callout-body"><strong>Writing starters</strong>
+"Before taking this course, I would have [been surprised / not been surprised] by these patterns because…"<br><br>
+"Growing up in [District], I remember [specific memory], which [does / does not] match what the data shows…"<br><br>
+"Now, having studied [course concept], I understand these patterns differently. Specifically, I now see that…"</div>
+      </div>
+      <span class="scratch-label">Draft your response to Question 3 (one paragraph)</span>
+      <textarea class="scratch" id="sc-6" placeholder="Include a specific memory AND connect to course content." rows="6"></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 7 — Q4 ═══ -->
+  <div class="step-card" id="step-7">
+    <button class="step-toggle" onclick="toggleStep('step-7')" aria-expanded="false">
+      <div class="step-bubble">7</div>
+      <div class="step-label">
+        <span class="step-name">Question 4 — Policy Recommendation</span>
+        <span class="step-hint">What should the district do to address one of the gaps?</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">What This Question Asks</div>
+      <p>Describe <strong>at least one policy or practice</strong> you'd recommend the district consider. Don't just name a policy — explain what it is, why you chose it, and how it directly addresses the gap you identified.</p>
+      <div class="body-section-title">Checklist for This Section</div>
+      <ul class="check-list" id="cl-7">
+        <li><input type="checkbox" id="c7a"><label for="c7a">Name the specific gap or pattern your recommendation is targeting</label></li>
+        <li><input type="checkbox" id="c7b"><label for="c7b">Describe the policy or practice — what is it and how does it work?</label></li>
+        <li><input type="checkbox" id="c7c"><label for="c7c">Explain <em>why</em> this would help, connecting to course concepts or evidence if possible</label></li>
+        <li><input type="checkbox" id="c7d"><label for="c7d">Be realistic — the recommendation should be feasible for a school district</label></li>
+      </ul>
+      <div class="callout prompt">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body"><strong>Possible policy directions (pick one or propose your own)</strong>
+Community schools model (wraparound services on-site) · High-dosage tutoring · Early childhood education expansion · Culturally relevant curriculum · Equitable school funding advocacy · Teacher diversity initiatives · Summer learning programs · Family engagement &amp; literacy nights · After-school enrichment for low-income students</div>
+      </div>
+      <div class="callout example">
+        <span class="callout-icon">📌</span>
+        <div class="callout-body"><strong>Paragraph structure that works well</strong>"To address [specific gap] in [District], I would recommend [policy name]. This approach involves [brief description of how it works]. Research from our course readings suggests that [connection to concept or quote]. While this would require [acknowledge the challenge], it directly targets [root cause] and could meaningfully reduce the gap I identified."</div>
+      </div>
+      <span class="scratch-label">Draft your response to Question 4</span>
+      <textarea class="scratch" id="sc-7" placeholder="One to two paragraphs — name the gap, describe the policy, explain the connection." rows="6"></textarea>
+    </div>
+  </div>
+
+  <!-- ═══ STEP 8 — REFERENCES ═══ -->
+  <div class="step-card" id="step-8">
+    <button class="step-toggle" onclick="toggleStep('step-8')" aria-expanded="false">
+      <div class="step-bubble">8</div>
+      <div class="step-label">
+        <span class="step-name">Build Your References List</span>
+        <span class="step-hint">APA format for every source you cited — including EOP</span>
+      </div>
+      <span class="step-done-tag">Done ✓</span>
+      <span class="step-chevron">▾</span>
+    </button>
+    <div class="step-body">
+      <div class="body-section-title">What Goes on the References Page / Slide</div>
+      <p>Every source you cited in-text needs a full entry here. That includes your course readings, your news article, and the Educational Opportunity Project.</p>
+      <div class="body-section-title">Checklist</div>
+      <ul class="check-list" id="cl-8">
+        <li><input type="checkbox" id="c8a"><label for="c8a">Every in-text citation has a matching full reference entry</label></li>
+        <li><input type="checkbox" id="c8b"><label for="c8b">References are in <strong>alphabetical order</strong> by first author's last name</label></li>
+        <li><input type="checkbox" id="c8c"><label for="c8c"><strong>Hanging indent</strong> applied — first line flush left, all continuation lines indented ~0.5"</label></li>
+        <li><input type="checkbox" id="c8d"><label for="c8d">Educational Opportunity Project cited (see sample below)</label></li>
+        <li><input type="checkbox" id="c8e"><label for="c8e">Book/journal titles are italicized</label></li>
+      </ul>
+      <div class="body-section-title">APA Reference Formats</div>
+      <div class="apa-block"><span class="apa-type">Journal article</span>Author, A. A., &amp; Author, B. B. (Year). Title of article. <em>Journal Name, Volume</em>(Issue), pp–pp. https://doi.org/xxxxx</div>
+      <div class="apa-block"><span class="apa-type">Book chapter</span>Author, A. A. (Year). Title of chapter. In E. E. Editor (Ed.), <em>Title of book</em> (pp. xx–xx). Publisher Name.</div>
+      <div class="apa-block"><span class="apa-type">Online news article</span>Author, A. A. (Year, Month Day). Title of article. <em>Name of Publication</em>. https://www.url.com</div>
+      <div class="apa-block"><span class="apa-type">Educational Opportunity Project</span>Reardon, S. F., Ho, A. D., Shear, B. R., Fahle, E. M., Kalogrides, D., Jang, H., &amp; Chavez, B. (2021). <em>Stanford Education Data Archive</em> (Version 4.1). Stanford University. https://edopportunity.org</div>
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body"><strong>Free citation generators</strong>Try <a href="https://zbib.org" target="_blank" rel="noopener">ZBib.org</a> or <a href="https://www.citethisforme.com" target="_blank" rel="noopener">CiteThisForMe.com</a> — paste in a URL or DOI and they generate APA format automatically. Always double-check the output.</div>
+      </div>
+      <span class="scratch-label">Draft your references (alphabetical, one per line)</span>
+      <textarea class="scratch" id="sc-8" placeholder="Paste or type your formatted references here." rows="7"></textarea>
+    </div>
+  </div>
+
+  <!-- FINAL SUBMIT CARD -->
+  <div class="submit-card">
+    <h2>Final Submission Checklist ✓</h2>
+    <p>Go through every item before uploading to Canvas. All boxes should be checked.</p>
+    <ul class="check-list" id="cl-final">
+      <li><input type="checkbox" id="cf1"><label for="cf1">3+ EOP data patterns described with specific numbers from the −6 to +6 scale</label></li>
+      <li><input type="checkbox" id="cf2"><label for="cf2">1+ reputable news article from the last 2 years used and cited</label></li>
+      <li><input type="checkbox" id="cf3"><label for="cf3">2+ course readings used with APA in-text citations</label></li>
+      <li><input type="checkbox" id="cf4"><label for="cf4">2+ direct quotes (each at least 1 full sentence) with proper APA citations</label></li>
+      <li><input type="checkbox" id="cf5"><label for="cf5">All 4 questions answered</label></li>
+      <li><input type="checkbox" id="cf6"><label for="cf6">Both <em>in-school</em> AND <em>out-of-school</em> factors addressed in Question 2</label></li>
+      <li><input type="checkbox" id="cf7"><label for="cf7">Reflection in Question 3 addresses BEFORE the course AND right NOW</label></li>
+      <li><input type="checkbox" id="cf8"><label for="cf8">Title page (paper) or title slide (slide deck) included</label></li>
+      <li><input type="checkbox" id="cf9"><label for="cf9">References page / slide with all sources in proper APA format</label></li>
+      <li><input type="checkbox" id="cf10"><label for="cf10">File saved as <strong>.docx</strong>, <strong>.pptx</strong>, or <strong>.pdf</strong> — NOT Apple Pages or Google formats</label></li>
+      <li><input type="checkbox" id="cf11"><label for="cf11">(Paper only) 2–3 pages, single-spaced, 12 pt font, 1-inch margins</label></li>
+      <li><input type="checkbox" id="cf12"><label for="cf12">(Slides only) Exactly 10 slides — all analysis on slides, not in speaker notes</label></li>
+    </ul>
+  </div>
+
+</main>
+
+<script>
+// ─── TOGGLE ────────────────────────────────────
+function toggleStep(id) {
+  const card = document.getElementById(id);
+  const opening = !card.classList.contains('is-open');
+  card.classList.toggle('is-open', opening);
+  card.querySelector('.step-toggle').setAttribute('aria-expanded', opening);
+}
+
+// ─── CHECKBOX HANDLER ──────────────────────────
+function handleCheck(cb) {
+  const li = cb.closest('li');
+  if (li) li.classList.toggle('is-checked', cb.checked);
+  // Mark step complete if all checkboxes in it are checked
+  const card = cb.closest('.step-card');
+  if (card) {
+    const boxes = card.querySelectorAll('.check-list input[type="checkbox"]');
+    const allDone = boxes.length > 0 && [...boxes].every(b => b.checked);
+    card.classList.toggle('is-complete', allDone);
+  }
+  updateProgress();
+  saveAll();
+}
+
+document.addEventListener('change', e => {
+  if (e.target.type === 'checkbox') handleCheck(e.target);
+});
+
+// ─── PROGRESS BAR ──────────────────────────────
+function updateProgress() {
+  const all = document.querySelectorAll('.check-list input[type="checkbox"]');
+  const done = [...all].filter(b => b.checked);
+  const pct = all.length ? (done.length / all.length * 100).toFixed(1) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = done.length + ' / ' + all.length;
+}
+
+// ─── STORAGE HELPERS ───────────────────────────
+function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
+function safeSet(k,v) { try { localStorage.setItem(k,v); } catch(e) {} }
+
+function saveAll() {
+  const state = {};
+  document.querySelectorAll('.check-list input[type="checkbox"]').forEach(cb => { state[cb.id] = cb.checked; });
+  safeSet('edl204_checks', JSON.stringify(state));
+}
+
+function loadAll() {
+  // Checkboxes
+  const raw = safeGet('edl204_checks');
+  if (raw) {
+    try {
+      const state = JSON.parse(raw);
+      document.querySelectorAll('.check-list input[type="checkbox"]').forEach(cb => {
+        if (cb.id in state) {
+          cb.checked = state[cb.id];
+          const li = cb.closest('li');
+          if (li) li.classList.toggle('is-checked', cb.checked);
+        }
+      });
+      // Recheck card completion
+      document.querySelectorAll('.step-card').forEach(card => {
+        const boxes = card.querySelectorAll('.check-list input[type="checkbox"]');
+        const allDone = boxes.length > 0 && [...boxes].every(b => b.checked);
+        card.classList.toggle('is-complete', allDone);
+      });
+    } catch(e) {}
+  }
+  // Scratchpads
+  document.querySelectorAll('textarea.scratch').forEach(ta => {
+    const saved = safeGet('edl204_' + ta.id);
+    if (saved !== null) ta.value = saved;
+    ta.addEventListener('input', () => safeSet('edl204_' + ta.id, ta.value));
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadAll();
+  updateProgress();
+});
+</script>
+</body>
+</html>
