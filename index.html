@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Teaching &amp; Learning | J. Woods Hayes</title>
+  <title>J. Woods Hayes | Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Serif+4:wght@300;400&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -12,7 +12,6 @@
       --accent: #b5451b;
       --muted: #3d3530;
       --rule: #b0a498;
-      --tint: #faf8f5;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -29,34 +28,31 @@
     header {
       max-width: 700px;
       margin: 0 auto;
-      padding: 3rem 2rem 2rem;
+      padding: 4rem 2rem 2rem;
+      text-align: center;
       border-bottom: 2px solid var(--rule);
     }
 
-    .back {
-      display: inline-block;
-      font-size: 0.9rem;
-      color: var(--muted);
-      text-decoration: none;
-      margin-bottom: 1.5rem;
-      transition: color 0.2s;
-    }
-    .back:hover { color: var(--accent); }
-    .back::before { content: '← '; }
-
     h1 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 0.5rem;
       color: var(--ink);
     }
 
-    .page-desc {
-      font-size: 1rem;
+    .subtitle {
+      font-size: 1.1rem;
       color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .bio {
+      font-size: 1rem;
       line-height: 1.6;
-      margin-top: 0.75rem;
+      max-width: 600px;
+      margin: 1.5rem auto 0;
+      color: var(--ink);
     }
 
     main {
@@ -65,91 +61,73 @@
       padding: 3rem 2rem 5rem;
     }
 
-    /* Project card */
-    .project {
-      border: 1px solid var(--rule);
-      margin-bottom: 2.5rem;
+    h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+      position: relative;
+      padding-bottom: 0.5rem;
     }
 
-    .project-header {
-      padding: 1.5rem 1.75rem 1.25rem;
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 3rem;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .essay-list {
+      list-style: none;
+      margin-top: 2rem;
+    }
+
+    .essay-item {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
       border-bottom: 1px solid var(--rule);
     }
 
-    .project-kicker {
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .essay-item:last-child {
+      border-bottom: none;
+    }
+
+    .essay-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
       margin-bottom: 0.5rem;
     }
 
-    .project-title {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 1.5rem;
-      font-weight: 700;
+    .essay-title a {
       color: var(--ink);
-      margin-bottom: 0.4rem;
-    }
-
-    .project-subtitle {
-      font-size: 0.95rem;
-      color: var(--muted);
-      font-style: italic;
-    }
-
-    .project-body {
-      padding: 1.25rem 1.75rem;
-      background: var(--tint);
-    }
-
-    .project-body p {
-      font-size: 1rem;
-      line-height: 1.7;
-      color: var(--ink);
-      margin-bottom: 1rem;
-    }
-
-    .project-body p:last-of-type {
-      margin-bottom: 0;
-    }
-
-    .project-footer {
-      padding: 1rem 1.75rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      border-top: 1px solid var(--rule);
-    }
-
-    .project-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-size: 0.75rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border: 1px solid var(--rule);
-      padding: 0.2rem 0.6rem;
-    }
-
-    .project-link {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--accent);
       text-decoration: none;
-      transition: opacity 0.2s;
-      white-space: nowrap;
+      transition: color 0.2s ease;
     }
-    .project-link:hover { opacity: 0.7; }
-    .project-link::after { content: ' →'; }
+
+    .essay-title a:hover {
+      color: var(--accent);
+    }
+
+    .essay-meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .essay-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    .section-divider {
+      margin-top: 4rem;
+    }
 
     footer {
       max-width: 700px;
@@ -166,7 +144,9 @@
       text-decoration: none;
     }
 
-    footer a:hover { text-decoration: underline; }
+    footer a:hover {
+      text-decoration: underline;
+    }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -181,50 +161,57 @@
 <body>
 
 <header>
-  <a class="back" href="index.html">J. Woods Hayes</a>
-  <h1>Teaching &amp; Learning</h1>
-  <p class="page-desc">
-    Interactive tools and pedagogical frameworks for equity-centered teaching. 
-    Built for use in higher education courses on race, policy, and social theory.
+  <h1>J. Woods Hayes</h1>
+  <div class="subtitle">PhD Candidate, Educational Leadership | Miami University, 2026</div>
+  <p class="bio">
+    Socio-technical policy researcher transitioning from educational institutions to AI societal impacts 
+    and safety research. Twenty years building frameworks for equity, safety, and institutional accountability.
   </p>
 </header>
 
 <main>
-
-  <div class="project">
-    <div class="project-header">
-      <div class="project-kicker">Interactive Game &nbsp;·&nbsp; 2026</div>
-      <div class="project-title">ACCESS</div>
-      <div class="project-subtitle">Who gets in. Who gets left out. Why it's never one thing.</div>
-    </div>
-    <div class="project-body">
-      <p>
-        A browser-based roleplaying game for 2–6 players in which participants build characters 
-        with intersecting identities and navigate real-world scenarios — job interviews, healthcare 
-        encounters, housing applications, financial aid processes — that grant or restrict access 
-        to resources based on how those identities compound.
-      </p>
-      <p>
-        Designed for use in college-level courses in sociology and education. Grounded in 
-        Kimberlé Crenshaw's intersectionality framework and Tara Yosso's Community Cultural Wealth 
-        model.
-      </p>
-      <p>
-        Runs entirely in the browser. No login, no install, no data collected. 
-        Can be used as a whole-class activity, or in small groups.
-      </p>
-    </div>
-    <div class="project-footer">
-      <div class="project-tags">
-        <span class="tag">Intersectionality</span>
-        <span class="tag">Critical Race Theory</span>
-        <span class="tag">Game-Based Learning</span>
-        <span class="tag">Community Cultural Wealth</span>
+  <h2>Essays</h2>
+  <ul class="essay-list">
+    <li class="essay-item">
+      <div class="essay-title">
+        <a href="pedagogical-safety.html">Pedagogical Safety: The Missing Loop in AI Ethics</a>
       </div>
-      <a class="project-link" href="https://jwoodshayes.github.io/access-game/game.html">Play ACCESS</a>
-    </div>
-  </div>
+      <div class="essay-meta">February 2026</div>
+      <div class="essay-description">
+        How safety in AI systems emerges not from preventing errors, but from the quality of the pedagogical 
+        relationship between AI and user. On epistemic humility, the bidirectional safety model, and why 
+        building systems that make users better at thinking is a safety requirement—not just good pedagogy.
+      </div>
+    </li>
+    <li class="essay-item">
+      <div class="essay-title">
+        <a href="ai-ethics-essay.html">Why I'm Pursuing a Career in AI — And Why That's the Ethical Choice</a>
+      </div>
+      <div class="essay-meta">February 2026</div>
+      <div class="essay-description">
+        After two decades in educational policy, my argument for why working in AI societal impacts 
+        isn't a compromise of my values — it's the most direct expression of them. On pragmatist ethics, 
+        institutional presence, and choosing to answer the questions that remain open.
+      </div>
+    </li>
+  </ul>
 
+  <div class="section-divider">
+    <h2>Teaching &amp; Learning</h2>
+    <ul class="essay-list">
+      <li class="essay-item">
+        <div class="essay-title">
+          <a href="teaching.html">Teaching &amp; Learning Projects</a>
+        </div>
+        <div class="essay-meta">Interactive tools and course materials</div>
+        <div class="essay-description">
+          Games, simulations, and pedagogical frameworks for equity-centered teaching. 
+          Currently includes ACCESS, a browser-based intersectionality teaching game 
+          based on the frameworks of Kimberlé Crenshaw and Tara Yosso.
+        </div>
+      </li>
+    </ul>
+  </div>
 </main>
 
 <footer>
