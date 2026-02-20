@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pedagogical Safety: The Missing Loop in AI Ethics</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #0f0d0b;
+      --paper: #ffffff;
+      --accent: #b5451b;
+      --muted: #3d3530;
+      --rule: #b0a498;
+      --pull: #f0f0f0;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 400;
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 3px double var(--rule);
+      padding: 2.5rem 0 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-label {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .header-label span {
+      display: inline-block;
+      padding: 0 1rem;
+      position: relative;
+    }
+
+    .header-label span::before,
+    .header-label span::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 3rem;
+      height: 1px;
+      background: var(--rule);
+    }
+
+    .header-label span::before { right: 100%; }
+    .header-label span::after  { left: 100%; }
+
+    h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      max-width: 750px;
+      margin: 0 auto 1rem;
+      padding: 0 2rem;
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .byline {
+      font-size: 0.85rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-top: 1.2rem;
+    }
+
+    .byline strong {
+      color: var(--ink);
+      font-weight: 400;
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    /* ── Drop cap ── */
+    .lead-paragraph::first-letter {
+      font-family: 'Playfair Display', serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      float: left;
+      line-height: 0.8;
+      margin: 0.15em 0.1em 0 0;
+      color: var(--accent);
+    }
+
+    /* ── Body text ── */
+    p {
+      margin-bottom: 1.6rem;
+      font-size: 1.05rem;
+    }
+
+    /* ── Section headings ── */
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      font-style: italic;
+      margin: 3rem 0 1rem;
+      color: var(--ink);
+      position: relative;
+      padding-bottom: 0.6rem;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 2.5rem;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    /* ── Subsection headings ── */
+    h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 2rem 0 0.8rem;
+      color: var(--ink);
+    }
+
+    /* ── Bold text for design principles ── */
+    strong {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* ── Lists ── */
+    ul {
+      margin: 1rem 0 1.6rem 2rem;
+      line-height: 1.7;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    /* ── Blockquote ── */
+    blockquote {
+      background: var(--pull);
+      border-left: 3px solid var(--accent);
+      margin: 2.5rem -1.5rem;
+      padding: 1.8rem 2rem 1.8rem 2.5rem;
+      font-style: italic;
+    }
+
+    /* ── Horizontal rule ── */
+    .section-break {
+      text-align: center;
+      margin: 2.5rem 0;
+      color: var(--muted);
+      letter-spacing: 0.5em;
+      font-size: 0.8rem;
+    }
+
+    /* ── References ── */
+    .references {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--rule);
+    }
+
+    .references h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .references p {
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      text-indent: -1.5rem;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Fade-in animation ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    header  { animation: fadeUp 0.7s ease both; }
+    main    { animation: fadeUp 0.7s ease 0.15s both; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      blockquote { margin: 2rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-label"><span>Essay</span></div>
+  <h1>Pedagogical Safety: <em>The Missing Loop in AI Ethics</em></h1>
+  <div class="byline">By <strong>J. Woods Hayes</strong> &nbsp;·&nbsp; PhD Candidate, Educational Leadership, Curriculum, & Culture &nbsp;·&nbsp; 2026</div>
+</header>
+
+<main>
+
+  <p class="lead-paragraph">
+    Recently, I posed a question to Claude (AI) about my strength, relative to my age group. It evolved into a deeper discussion about how I healed a significant injury with barbell training. The AI posed a simple question about any other benefits I had noticed. I didn't know that this moment was the inception point for a major idea.
+  </p>
+
+  <p>
+    I shared that I had noticed significant improvements in my mental health. The AI responded confidently that there were studies showing that such effects were "comparable to medication." When I asked for these studies, Claude's response surprised me:
+  </p>
+
+  <blockquote>
+    "I want to be straight with you here rather than just hand you a citation. I stated that with more confidence than I should have. The research on strength training and depression is genuinely promising and growing, but 'comparable to medication' is a stronger claim than the evidence fully supports in a clean apples-to-apples way."
+  </blockquote>
+
+  <p>
+    This moment struck me. Yes, the AI was wrong - but that's inevitable with any system making claims about complex evidence. Something else happened in that exchange. Something sophisticated: Epistemic humility (Porter et al., 2022).
+  </p>
+
+  <p>
+    When I pushed back and asked for sources, I was doing exactly what good learners do… what our pedagogy should teach them to do in the 21st century (Kincheloe, 2007). I questioned a claim (a confident-sounding one at that) and asked for evidence. And Claude's response — acknowledging the overstatement and explaining the limitation honestly — changed the moment from an input-output exchange into a collaborative learning experience that was pedagogically safe (see Wake et al., 2024).
+  </p>
+
+  <p>
+    And because it was pedagogically safe… it was ethically safe. Initial claims, like the one the AI made about strength training showing comparable results to medication, might have led to harmful outcomes. On a smaller scale, they could cause someone to eschew medications that could be benefitting them. On a larger scale, in some hands, they could lead to policy recommendations that disproportionately impact certain populations- all based on a false confidence in AI-generated information.
+  </p>
+
+  <p>
+    Understand, the safety didn't come from the AI avoiding mistakes. It came from a valuable loop: I challenged, the AI responded with intellectual honesty, and I learned something about the topic, about evaluating AI claims, and even about how to better interact with the technology.
+  </p>
+
+  <p>
+    When I shared this exchange with colleagues, several noted that the phrase "I want to be straight with you" made the AI seem less like an authority figure dispensing information and more like a trusted friend having an honest conversation. That shift matters enormously. A collaborator invites pushback. An authority figure discourages it - or even, in the case of some teachers, punishes it.
+  </p>
+
+  <p>
+    This is the pedagogical core of safety. Systems that operate as infallible authorities will output passive consumers who are merely receptacles of pre-selected knowledge (see Freire 1970). Conversely, systems which operate in humility and honestly show their fallibility, become partners and collaborators in the development of all participants in the exchange. That type of critical engagement makes users safer.
+  </p>
+
+  <p>
+    Safety and pedagogy were not separate in this exchange. They were one. They were integral to each other. And current AI safety research is missing that piece.
+  </p>
+
+  <div class="section-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <h2>The Bidirectional Safety Model</h2>
+
+  <p>
+    Current AI safety research often focuses on binary questions. Does the AI say something harmful? Does it produce biased results? Does it give dangerous advice? While these questions are important, they treat safety as something the AI either has or doesn't have — a property of the system itself.
+  </p>
+
+  <p>
+    My exchange with Claude reveals a different model. Safety, in the context of that example, wasn't merely a property of the AI. It was something deeper. It was something that emerged from the relationship between the AI and me as a user. This is a bidirectional safety model, and it works as a reinforcing loop:
+  </p>
+
+  <p><strong>The AI's role:</strong></p>
+  <ul>
+    <li>Makes claims with appropriate confidence calibration</li>
+    <li>Invites questions and challenges</li>
+    <li>Gives feedback on questions</li>
+    <li>Responds to pushback with intellectual honesty</li>
+    <li>Models epistemic humility as a practice, not just a disclaimer</li>
+  </ul>
+
+  <p><strong>The user's role:</strong></p>
+  <ul>
+    <li>Recognizes when to question claims that seem to lack evidentiary support</li>
+    <li>Asks for evidence or clarification</li>
+    <li>Evaluates AI responses critically</li>
+    <li>Applies a healthy skepticism</li>
+    <li>Updates (or not) beliefs based on new information</li>
+  </ul>
+
+  <p><strong>The loop:</strong></p>
+  <p>
+    When the AI models good epistemic practice, it teaches users to be better questioners. When users challenge effectively, the AI responds in ways that reinforce critical thinking. The interaction itself becomes pedagogy (Holstein et al., 2019). Each exchange either strengthens or weakens the user's capacity to evaluate claims — not just from AI, but from any source.
+  </p>
+
+  <p>
+    This is fundamentally different from the current safety paradigm. We're not asking "Did the AI avoid saying something wrong?" We're asking "Did this interaction improve, or diminish, the user's thinking skills?"
+  </p>
+
+  <p>Consider what breaks the loop:</p>
+
+  <p><strong>AI systems designed to seem authoritative:</strong></p>
+  <ul>
+    <li>Confident tone regardless of evidence quality</li>
+    <li>No mechanism for acknowledging uncertainty</li>
+    <li>Responses that discourage follow-up questions</li>
+    <li>Inability or refusal to explain reasoning or limitations</li>
+  </ul>
+
+  <p><strong>Users trained to be passive consumers:</strong></p>
+  <ul>
+    <li>Accept AI outputs without verification</li>
+    <li>Treat AI as an infallible expert</li>
+    <li>Don't ask (or know how to ask) followup questions</li>
+    <li>Lack frameworks for evaluating evidence</li>
+  </ul>
+
+  <p>
+    When either side of the loop fails, the whole system becomes unsafe. An AI that responds well to challenges is useless if users don't know how to challenge it. And users who are trained to question claims can't develop that capacity if AI systems punish or ignore pushback.
+  </p>
+
+  <p>
+    The safety mechanism isn't the AI's accuracy. It's the quality of the pedagogical relationship.
+  </p>
+
+  <p>
+    This has profound implications for how we build and evaluate AI systems. We shouldn't just be testing outputs. We should be measuring some important aspects. Does this AI make users better at reasoning over time? Does it strengthen or weaken their capacity to evaluate claims critically? Does it teach them to trust appropriately, or does it train them to accept information passively?
+  </p>
+
+  <p>
+    There are pedagogical questions, and there are safety questions. In this loop, they are one and the same.
+  </p>
+
+  <div class="section-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <h2>Why AI Researchers Need Educators</h2>
+
+  <p>
+    AI safety researchers bring critical expertise to building reliable systems: they understand alignment, robustness, adversarial attacks, and model behavior at scale. But the bidirectional safety model requires a different kind of knowledge — one that many AI researchers don't have and can't easily acquire from reading a few papers on learning theory.
+  </p>
+
+  <p>
+    Educators spend entire careers studying how people form beliefs, how they update them (or resist updating them), what creates rigor versus clarity, how to build depth of knowledge, and what helps versus hinders critical thinking (Pintrich, 2002). This isn't abstract theory. It's practical knowledge built from thousands of hours involved in teaching and learning.
+  </p>
+
+  <p>The questions educators ask are different from the questions AI researchers typically ask:</p>
+
+  <p>
+    <strong>AI researchers ask:</strong> "Is this an accurate output?"<br>
+    <strong>Educators ask:</strong> "Does this interaction make the user better at evaluating accuracy over time? If so, how?"
+  </p>
+
+  <p>
+    <strong>AI researchers ask:</strong> "How do we prevent the model from saying harmful things?"<br>
+    <strong>Educators ask:</strong> "Can the system teach users to recognize harm when they encounter it?"
+  </p>
+
+  <p>
+    <strong>AI researchers ask:</strong> "Can we make AI more confident when it's correct and less confident when it's uncertain?"<br>
+    <strong>Educators ask:</strong> "How do we teach users to adjust their trust based on context, not just the AI's stated confidence level?"
+  </p>
+
+  <p>
+    These questions don't compete with each other. They're complementary. And answering the second set requires understanding pedagogy, not just machine learning.
+  </p>
+
+  <p>
+    Consider the insights that emerged from my exchange with Claude — insights that came from twenty years in educational institutions, not from technical training:
+  </p>
+
+  <p>
+    <strong>Good pedagogy isn't about authority, it's about partnership.</strong> The phrase "I want to be straight with you" worked because it positioned the AI as a fallible collaborator, not an infallible expert. That's a pedagogical choice with safety implications. Systems designed to seem authoritative either train users to be passive, or train them to be avoidant. Systems designed to invite collaboration train users to think critically.
+  </p>
+
+  <p>
+    <strong>The distinction between good intentions and lived experience matters.</strong> AI researchers building safety systems are, I believe, genuinely ethical. But knowing where systems fail people isn't something you can learn from datasets. That can only be learned in the day-to-day work of working within.
+  </p>
+
+  <p>
+    <strong>Epistemic safety and pedagogical safety converge.</strong> When I pushed back on the strength training claim, I wasn't just fact-checking. I was practicing exactly what good pedagogy should teach: healthy skepticism, demand for evidence, and willingness to update beliefs. And Claude's response — admitting overconfidence, explaining limitations — was both a safety guardrail and a teaching moment. You can't separate these functions.
+  </p>
+
+  <p>
+    <strong>Systems shape users over time.</strong> Educators think in terms of long-term development, not just individual interactions. The question isn't "Did this AI give a good answer?" but "What habits is this AI building in users?" An AI that gives perfect answers but trains users to accept claims without question is pedagogically and ethically dangerous.
+  </p>
+
+  <p>
+    This is why the solution isn't just "hire some educators to consult." It requires genuine interdisciplinary collaboration where pedagogical expertise shapes the fundamental design of AI systems, not just the content they deliver.
+  </p>
+
+  <p>We need AI researchers who understand that:</p>
+  <ul>
+    <li>The way AI responds to being challenged is as important as what it says initially</li>
+    <li>User development over time is a safety metric</li>
+    <li>A sound, supportive pedagogical relationship is the safety mechanism</li>
+    <li>Building systems that make users better at thinking is an engineering imperative, not just a desirable feature</li>
+  </ul>
+
+  <p>Concurrently, we need educators who understand that:</p>
+  <ul>
+    <li>AI systems at scale require different frameworks than classroom teaching</li>
+    <li>Technical constraints shape what's pedagogically possible</li>
+    <li>Active and collaborative human-in-the-loop (HITL) engagement from educators is essential</li>
+    <li>Safety and pedagogy aren't separate concerns, they are integrated challenges</li>
+  </ul>
+
+  <p>
+    Neither group can do this work alone. The pedagogical safety model requires both.
+  </p>
+
+  <div class="section-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <h2>What Pedagogical Safety Looks Like in Practice</h2>
+
+  <p>
+    If we take the bidirectional safety model seriously, what does it actually mean for how we build and evaluate AI systems?
+  </p>
+
+  <h3>New Evaluation Metrics</h3>
+
+  <p>Current AI safety evaluation asks: "Does this model produce harmful outputs?"</p>
+
+  <p>Pedagogical safety evaluation asks:</p>
+  <ul>
+    <li>Does this AI make users better at reasoning over time?</li>
+    <li>Does it strengthen or weaken their capacity to evaluate claims critically?</li>
+    <li>Does it teach appropriate trust calibration, or does it train passive acceptance?</li>
+    <li>How does the AI respond when challenged — does it invite further inquiry or shut it down?</li>
+    <li>What habits is this AI building in users across repeated interactions?</li>
+  </ul>
+
+  <p>These aren't soft metrics. They're measurable. We can track:</p>
+  <ul>
+    <li>How users' questioning behavior changes over time with a system</li>
+    <li>Whether users become more or less likely to ask for sources after extended use</li>
+    <li>How accurately users calibrate their confidence in AI outputs (Koriat, 2012)</li>
+    <li>Whether users generalize critical thinking skills to non-AI contexts</li>
+    <li>The quality and depth of follow-up questions users ask</li>
+  </ul>
+
+  <h3>Design Principles for Pedagogical Safety</h3>
+
+  <p>AI systems built for pedagogical safety would:</p>
+
+  <p>
+    <strong>1. Calibrate confidence appropriately</strong><br>
+    This doesn't just mean that AI should "be uncertain when uncertain." It means actively teaching users what epistemic confidence looks like. When an AI says "I'm not certain about this," it should explain <em>why</em> — what evidence is missing, what would increase confidence, where disagreement exists in the literature.
+  </p>
+
+  <p>
+    <strong>2. Invite challenge as a feature, not a bug</strong><br>
+    Systems should be designed to encourage pushback. This might mean:
+  </p>
+  <ul>
+    <li>Explicitly prompting users to verify claims</li>
+    <li>Rewarding critical questions with better explanations</li>
+    <li>Making uncertainty visible and normal, not something to hide</li>
+    <li>Responding to challenges with "good question," or "that's a solid challenge," rather than defensiveness</li>
+  </ul>
+
+  <p>
+    <strong>3. Make reasoning transparent</strong><br>
+    Users can't learn to think critically about AI outputs if they can't see how the AI arrived at its conclusions. This isn't just about interpretability for researchers — it's about making the thinking process legible to users so they can evaluate it. Then, it should again ask if the user wants to challenge anything.
+  </p>
+
+  <p>
+    <strong>4. Model intellectual honesty</strong><br>
+    When an AI is wrong, it should acknowledge error in ways that teach users that changing your mind is intellectually rigorous, not weak. The phrase "I want to be straight with you" worked because it modeled the kind of honesty we want users to practice themselves. Imagine the societal benefits to normalizing changing one's mind.
+  </p>
+
+  <p>
+    <strong>5. Differentiate between types of knowledge</strong><br>
+    Not all claims deserve the same confidence level. An AI should help users distinguish between:
+  </p>
+  <ul>
+    <li>Well-established facts vs. strong consensus</li>
+    <li>Emerging research vs. preliminary findings</li>
+    <li>Contested claims vs. legitimate disagreement</li>
+    <li>Speculation or inference beyond available evidence</li>
+  </ul>
+
+  <p>
+    This is pedagogical work. It teaches users how to think about different kinds of knowledge claims. That sort of deep epistemological inquiry is a valuable addition to learner development.
+  </p>
+
+  <p>
+    <strong>6. Encourage independent application and gradual release</strong><br>
+    Good pedagogy lives in a powerful goal that aims to break perpetual dependence on the teacher — We should be building capacity for independent work. AI systems built for pedagogical safety should recognize when users are ready to attempt tasks on their own and actively encourage that independence. This might mean:
+  </p>
+  <ul>
+    <li>Suggesting "You've asked great questions about this — want to try solving the next part yourself?"</li>
+    <li>Recognizing patterns of growing competence and explicitly naming them: "You're getting better at identifying when sources need verification"</li>
+    <li>Offering scaffolding that gradually reduces: more support early, less as the user demonstrates capability</li>
+    <li>Creating moments where the AI steps back: "I think you have the skills for this. Try it, and come back if you want to talk through your reasoning"</li>
+    <li>Explicitly creating protocols in which the AI won't provide results until the student has inputted their own attempts</li>
+  </ul>
+
+  <p>
+    This follows the pedagogical principle of gradual release of responsibility (Fisher & Frey, 2008) — the teacher models, then guides, then supports independent practice. An AI that always provides answers, even when the user could generate them independently, isn't teaching. It's creating dependency.
+  </p>
+
+  <p>
+    The safety implication is profound: users who never develop confidence in their own reasoning become permanently vulnerable. They can't evaluate AI outputs if they don't trust their own judgment. Building self-efficacy isn't just pedagogically sound — it's a safety requirement.
+  </p>
+
+  <h3>What This Means for AI Training</h3>
+
+  <p>The implications extend to how we train models:</p>
+
+  <p>If we want AI that responds well to being challenged, we need training data that includes:</p>
+  <ul>
+    <li>Examples of productive intellectual disagreement</li>
+    <li>Conversations where people question claims and get thoughtful responses</li>
+    <li>Instances of confidence calibration and uncertainty acknowledgment</li>
+    <li>Models of how experts talk about limitations in their own fields</li>
+  </ul>
+
+  <p>
+    Current training approaches often optimize for sounding authoritative. Pedagogical safety requires optimizing for something else: building AI that helps users sound authoritative - which is evident by questioning an AI's logic.
+  </p>
+
+  <h3>The Polarization Connection</h3>
+
+  <p>
+    The implications extend beyond individual interactions. When AI systems train users to accept overconfident (and in the case of my strength training example, unsourced) claims without question, two things happen. Users become vulnerable to AI-generated misinformation, and epistemic capacities that protect against all forms of manipulation are eroded (Lewandowsky et al., 2017).
+  </p>
+
+  <p>
+    In polarized environments, these are unacceptable results. People who can't calibrate confidence, can't recognize when sources are unreliable, and can't update beliefs when challenged are more vulnerable to tribalism and biased knowledge. An AI that teaches critical thinking skills doesn't just make individual users safer — it may build cognitive immunity against polarization itself.
+  </p>
+
+  <p>
+    But that's a larger conversation for another time. The point is that pedagogical safety isn't just about preventing individual harms. It's about whether AI systems strengthen or weaken the epistemic foundations that healthy democracies require.
+  </p>
+
+  <h3>The Research Agenda</h3>
+
+  <p>This opens several concrete research directions:</p>
+
+  <p>
+    <strong>1. Longitudinal studies of user epistemology:</strong> How do users' reasoning skills change after extended interaction with different AI systems? Can we identify design choices that correlate with improved critical thinking and concrete pedagogy for more effective AI use?
+  </p>
+
+  <p>
+    <strong>2. Challenge-response frameworks:</strong> What makes an AI's response to pushback pedagogically effective? How do we measure whether a response strengthens or weakens user confidence in questioning claims? Is there a way for AI to also teach users how to push back with confidence?
+  </p>
+
+  <p>
+    <strong>3. Epistemic impact assessment:</strong> Before deploying AI systems at scale, can we evaluate their likely impact on user epistemology, just as we evaluate other safety risks?
+  </p>
+
+  <p>
+    <strong>4. Cross-domain transfer:</strong> Are the critical thinking skills developed through AI interaction applicable to other contexts? Can questioning AI claims lead to becoming better at evaluating human sources too?
+  </p>
+
+  <p>
+    <strong>5. Collaborative design methods:</strong> What are practical ways for AI researchers and educators to engage in interdisciplinary collaboration? How do we integrate pedagogical expertise into technical development processes? Are there voices we aren't including, but should be?
+  </p>
+
+  <p>
+    These aren't merely peripheral questions. They are crucial to guiding necessary guardrails for AI integration into learning processes. This bidirectional safety pedagogy model will create a safer AI.
+  </p>
+
+  <div class="section-break">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <h2>The Loop Is the Safety Mechanism</h2>
+
+  <p>
+    My two minute interaction with Claude about strength training revealed something fundamental about how safety actually works in AI systems.
+  </p>
+
+  <p>
+    Safety didn't come from perfect accuracy. Nor did it come from content filters or alignment training or careful prompt engineering. No. Safety came from the quality of the interaction itself. And when I thought about it afterwards, I found myself asking some crucial questions: What if I hadn't known how to question what I was being told? What if the AI hadn't known to acknowledge it? We both participated in a loop that made the conversation pedagogically and ethically safe.
+  </p>
+
+  <p>
+    Current AI safety research, while robust and vital, is missing this. Preventing AI from saying harmful things is not wasted effort. But, perhaps we've neglected the more important question: Are we building AI that actually develops the user in a way that helps them recognize and mitigate the harm themselves?
+  </p>
+
+  <p>
+    The bidirectional safety model offers this path. We should not treat safety as a Boolean true/false - a property the AI either does or does not have. More powerfully, we can design systems that are safe because they teach users how to know if the AI is safe, and to call it out when it is not. Instead of trying to make AI infallible, we can make AI that teaches users to think critically about fallibility — including their own. These are monumental additions to AI technology.
+  </p>
+
+  <p>
+    This requires genuine, enthusiastic collaboration between AI researchers and educators. Educators should not be included merely as consultants brought in after technical decisions are made, but as partners in the fundamental design of these systems. They should be there from the blueprinting, straight through to execution. How does this shape long-term development? What habits is this building? Does it improve users' independent reasoning? These are the safety questions educators ask.
+  </p>
+
+  <p>
+    This is a gap I hope to fill, which is why I am pursuing a career in AI societal impacts and safety research. Systems shape people. Even well-intentioned designs can fail vulnerable populations, and we must build frameworks that prioritize decisions to mitigate that problem. Such expertise isn't peripheral to AI safety. It's essential, and I am ready for the task.
+  </p>
+
+  <p>
+    The work ahead is clear: Epistemic impact must be evaluated and measured. We need design principles that focus on user development over outputs that are performative authority and confidence. We need training approaches that optimize for critical thinking, not just accuracy. And we need research programs that take pedagogical safety as seriously as we take alignment and robustness.
+  </p>
+
+  <p>
+    Talking to Claude about strength training taught me something I already knew from 20 years of teaching: To learn, we must be challenged. To grow from that challenge, we must know that we are safe enough to be honest, and not defensive. We create that safety every day in classrooms. We must create that safety in AI interactions. A safer, more trustworthy relationship between humans and technology is a foundation for reshaping how we think.
+  </p>
+
+  <p>
+    The pedagogy loop is the safety mechanism. It's time we built systems that strengthen it.
+  </p>
+
+  <div class="references">
+    <h3>References</h3>
+
+    <p>
+      Fisher, D., & Frey, N. (2008). <em>Better learning through structured teaching: A framework for the gradual release of responsibility.</em> ASCD.
+    </p>
+
+    <p>
+      Freire, P. (1970). <em>Pedagogy of the oppressed.</em> New York: Continuum.
+    </p>
+
+    <p>
+      Holstein, K., McLaren, B. M., & Aleven, V. (2019). Co-designing a real-time classroom orchestration tool to support teacher–AI complementarity. <em>Journal of Learning Analytics, 6</em>(2), 27-52.
+    </p>
+
+    <p>
+      Kincheloe, J. L. (2007). Critical pedagogy in the twenty-first century. <em>Critical pedagogy: Where are we now, 299,</em> 9-42.
+    </p>
+
+    <p>
+      Koriat, A. (2012). The self-consistency model of subjective confidence. <em>Psychological Review, 119</em>(1), 80-113.
+    </p>
+
+    <p>
+      Lewandowsky, S., Ecker, U. K., & Cook, J. (2017). Beyond misinformation: Understanding and coping with the "post-truth" era. <em>Journal of Applied Research in Memory and Cognition, 6</em>(4), 353-369.
+    </p>
+
+    <p>
+      Pintrich, P. R. (2002). The role of metacognitive knowledge in learning, teaching, and assessing. <em>Theory into Practice, 41</em>(4), 219-225.
+    </p>
+
+    <p>
+      Porter, T., Elnakouri, A., Meyers, E. A., Shibayama, T., Jayawickreme, E., & Grossmann, I. (2022). Predictors and consequences of intellectual humility. <em>Nature Reviews Psychology, 1</em>(9), 524-536.
+    </p>
+
+    <p>
+      Wake, S., Pownall, M., Harris, R., & Birtill, P. (2024). Balancing pedagogical innovation with psychological safety? Student perceptions of authentic assessment. <em>Assessment & Evaluation in Higher Education, 49</em>(4), 511-522.
+    </p>
+  </div>
+
+</main>
+
+<footer>
+  &copy; J. Woods Hayes &nbsp;·&nbsp; 2026 &nbsp;·&nbsp; All rights reserved
+</footer>
+
+</body>
+</html>
